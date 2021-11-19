@@ -21,23 +21,26 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private @NotBlank @Email String login;
+	private @NotBlank @Email String email;
 	private @NotBlank @Size(min = 6) String senha;
 	private @NotNull LocalDateTime instanteCriacao;
 
-	public Usuario(@NotBlank @Email String login, @NotBlank @Size(min = 6) @Valid @NotNull SenhaLimpa senhaLimpa, @NotNull LocalDateTime instanteCriacao) {
-		Assert.isTrue(StringUtils.hasLength(login), "O login não pode estar em branco!");
+	@Deprecated
+	public Usuario() { }
+	
+	public Usuario(@NotBlank @Email String email, @NotBlank @Size(min = 6) @Valid @NotNull SenhaLimpa senhaLimpa, @NotNull LocalDateTime instanteCriacao) {
+		Assert.isTrue(StringUtils.hasLength(email), "O login não pode estar em branco!");
 		Assert.isTrue(instanteCriacao!=null, "O instante de criação não pode ser nulo!");
 		Assert.isTrue(instanteCriacao.compareTo(LocalDateTime.now()) <= 0, "O instante de criação não pode ser no futuro!");
 		Assert.notNull(senhaLimpa, "O objeto do tipo senha limpa nao pode ser nulo!");
-		this.login = login;
+		this.email = email;
 		this.senha = senhaLimpa.hash();
 		this.instanteCriacao = instanteCriacao;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [login=" + login + ", senha=" + senha + ", instanteCriacao=" + instanteCriacao + "]";
+		return "Usuario [Email=" + email + ", senha=" + senha + ", instanteCriacao=" + instanteCriacao + "]";
 	}
 
 }
