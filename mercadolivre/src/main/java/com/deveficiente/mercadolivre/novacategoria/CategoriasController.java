@@ -23,7 +23,6 @@ public class CategoriasController {
 	@Transactional
 	public String cria(@RequestBody @Valid NovaCategoriaRequest request) {
 		Categoria possivalCategoria = request.toModel(manager);
-		System.out.println(possivalCategoria);
 		Optional.ofNullable(possivalCategoria).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
