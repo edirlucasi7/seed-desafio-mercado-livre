@@ -62,8 +62,7 @@ public class Produto {
 	}
 
 	public void setUsuarioLogado(Usuario usuario) {
-		this.usuarioLogado = usuario;
-		
+		this.usuarioLogado = usuario;	
 	}
 	
 }

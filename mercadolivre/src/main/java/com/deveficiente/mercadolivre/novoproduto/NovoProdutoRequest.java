@@ -38,7 +38,7 @@ public class NovoProdutoRequest {
 		this.idCategoria = idCategoria;
 	}
 
-	public Produto toModel(EntityManager manager, Usuario usuario) {
+	public Produto toModel(EntityManager manager, Usuario usuario) {		
 		Categoria categoria = manager.find(Categoria.class, idCategoria);
 		Assert.notNull(categoria, "Um produto não pode ser criado sem categoria");
 		Produto produto = new Produto(nome,valor,quantidade,caracteristica,descricao,categoria);
