@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,13 @@ public class ProdutosController {
 	private EntityManager manager;
 	@Autowired
 	private UsuarioRepository repository;
+	@Autowired
+	private ProibeCaracteristicaComNomeIgualValidator proibeCaracteristicaComNomeIgualValidator;
+	
+	@InitBinder
+	public void init(WebDataBinder binder) {
+		binder.addValidators(proibeCaracteristicaComNomeIgualValidator);
+	}
 	
 	@PostMapping("/produtos")
 	@Transactional
@@ -27,7 +36,7 @@ public class ProdutosController {
 		Usuario fakeUsuarioLogado = repository.findByEmail("icety@gmail");
 		
 		Produto produto = request.toModel(manager,fakeUsuarioLogado);
-		manager.persist(produto);
+//		manager.persist(produto);
 		
 		return produto.toString();
 		

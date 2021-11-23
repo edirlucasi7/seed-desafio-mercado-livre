@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.deveficiente.mercadolivre.novacategoria.Categoria;
+import com.deveficiente.mercadolivre.novoproduto.NovaCaracteristicaRequest;
 import com.deveficiente.mercadolivre.novoproduto.NovoProdutoRequest;
 import com.deveficiente.mercadolivre.novousuario.SenhaLimpa;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
@@ -18,7 +19,10 @@ import com.deveficiente.mercadolivre.novousuario.Usuario;
 
 public class NovoProdutoRequestTest {
 
-	private NovoProdutoRequest request = new NovoProdutoRequest("celularar", BigDecimal.TEN, 1, List.of("teste","teste","teste"), "teste", 1l);
+	private List<NovaCaracteristicaRequest> requestCategoria = List.of(new NovaCaracteristicaRequest("galaxy1","celular1"),
+			new NovaCaracteristicaRequest("galaxy2","celular2"), new NovaCaracteristicaRequest("galaxy3","celular3"));
+	
+	private NovoProdutoRequest request = new NovoProdutoRequest("celularar", BigDecimal.TEN, 1, requestCategoria, "teste", 1l);
 	
 	@Test
 	@DisplayName("cria o produto com categoria")
