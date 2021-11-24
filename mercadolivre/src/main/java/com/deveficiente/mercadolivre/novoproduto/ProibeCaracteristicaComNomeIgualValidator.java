@@ -20,7 +20,7 @@ public class ProibeCaracteristicaComNomeIgualValidator implements Validator{
 		
 		NovoProdutoRequest request = (NovoProdutoRequest) target;
 		if(request.temCaracteristicasComNomesIguais()) {
-			errors.rejectValue("caracteristicas", null, "Os nomes das caracteristicas não podem ser iguais!");
+			errors.rejectValue("caracteristicas", null, "O nome das caracteristicas não podem ser iguais!");
 		}
 		
 	}

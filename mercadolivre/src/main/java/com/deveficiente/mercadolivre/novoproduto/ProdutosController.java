@@ -36,7 +36,7 @@ public class ProdutosController {
 		Usuario fakeUsuarioLogado = repository.findByEmail("icety@gmail");
 		
 		Produto produto = request.toModel(manager,fakeUsuarioLogado);
-//		manager.persist(produto);
+		manager.persist(produto);
 		
 		return produto.toString();
 		

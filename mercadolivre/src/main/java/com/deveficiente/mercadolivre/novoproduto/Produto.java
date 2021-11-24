@@ -70,6 +70,7 @@ public class Produto {
 				+ ", instanteCriacao=" + instanteCriacao + ", usuarioLogado=" + usuarioLogado + "]";
 	}
 
+	@Deprecated
 	public void setUsuarioLogado(Usuario usuario) {
 		this.usuarioLogado = usuario;	
 	}

@@ -15,11 +15,13 @@ import javax.validation.constraints.Size;
 
 import org.springframework.util.Assert;
 
+import com.deveficiente.mercadolivre.compartilhado.UniqueValue;
 import com.deveficiente.mercadolivre.novacategoria.Categoria;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
 
 public class NovoProdutoRequest {
 	
+	@UniqueValue(domainClass = Produto.class, fieldName = "nome")
 	private @NotBlank String nome;
 	@Positive
 	private @NotNull BigDecimal valor;
@@ -43,6 +45,7 @@ public class NovoProdutoRequest {
 
 	public Produto toModel(EntityManager manager, Usuario usuario) {		
 		Categoria categoria = manager.find(Categoria.class, idCategoria);
+	
 		Assert.notNull(categoria, "Um produto não pode ser criado sem categoria");
 		
 		Produto produto = new Produto(nome,valor,quantidade,caracteristicas,descricao,categoria);

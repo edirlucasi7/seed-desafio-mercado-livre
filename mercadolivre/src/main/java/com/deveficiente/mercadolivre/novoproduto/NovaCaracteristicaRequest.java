@@ -18,7 +18,7 @@ public class NovaCaracteristicaRequest {
 		return nome;
 	}
 
-	public String getDscricao() {
+	public String getDescricao() {
 		return descricao;
 	}
 

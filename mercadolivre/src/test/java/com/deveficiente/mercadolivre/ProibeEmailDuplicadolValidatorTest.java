@@ -47,7 +47,7 @@ public class ProibeEmailDuplicadolValidatorTest {
 	
 	@Test
 	@DisplayName("deveria parar caso já tenha erro")
-	void teste4() throws Exception {
+	void teste3() throws Exception {
 	
 		Errors errors = new BeanPropertyBindingResult(request, "target");
 		errors.reject("codigo");

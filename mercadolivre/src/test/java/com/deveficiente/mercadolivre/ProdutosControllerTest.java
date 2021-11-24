@@ -1,11 +1,9 @@
 package com.deveficiente.mercadolivre;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assumptions;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.MethodMode;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.deveficiente.mercadolivre.novoproduto.NovaCaracteristicaRequest;
 import com.deveficiente.mercadolivre.novousuario.SenhaLimpa;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
 import com.deveficiente.mercadolivre.novousuario.UsuarioRepository;
@@ -34,7 +33,6 @@ public class ProdutosControllerTest {
 
 	@Autowired
 	private CustomMockMvc mvc;
-	private static List<String> caracteristica = new ArrayList<>();
 	private UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
 	
 	@Property(tries = 2)
@@ -45,9 +43,8 @@ public class ProdutosControllerTest {
 			@ForAll @IntRange(min = 1, max = 10) int quantidade,
 			@ForAll @AlphaChars @StringLength(min = 1, max = 1000) String descricao) throws Exception {
 		
-		Assumptions.assumeTrue(caracteristica.add("teste"));
-		Assumptions.assumeTrue(caracteristica.add("teste"));
-		Assumptions.assumeTrue(caracteristica.add("teste"));
+		List<NovaCaracteristicaRequest> requestCategoria = List.of(new NovaCaracteristicaRequest("galaxy1","celular1"),
+				new NovaCaracteristicaRequest("galaxy2","celular2"), new NovaCaracteristicaRequest("galaxy3","celular3"));
 		
 		mvc.post("/categorias", Map.of("nome","Tecnologia"));
 		mvc.post("/usuarios", Map.of("email","icety@gmail","senha","123456"));
@@ -57,10 +54,18 @@ public class ProdutosControllerTest {
 		mvc.post("/produtos", Map.of("nome",nome,
 				"valor",valor,
 				"quantidade",quantidade,
-				"caracteristica",caracteristica,
+				"caracteristicas",requestCategoria,
 				"descricao",descricao,
 				"idCategoria","1"))
 		.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+		
+		mvc.post("/produtos", Map.of("nome",nome,
+				"valor",valor,
+				"quantidade",quantidade,
+				"caracteristicas",requestCategoria,
+				"descricao",descricao,
+				"idCategoria","1"))
+		.andExpect(MockMvcResultMatchers.status().is4xxClientError());
 		
 	}
 	

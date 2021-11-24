@@ -33,11 +33,11 @@ public class UsuariosControllerTest {
 		
 		Assumptions.assumeTrue(emailsUnicos.add(email));
 		
-		mvc.post("/usuarios", Map.of("login", email+"@gmail.com",
+		mvc.post("/usuarios", Map.of("email", email+"@gmail.com",
 				"senha",senha))
 		.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 		
-		mvc.post("/usuarios", Map.of("login", email+"@gmail.com",
+		mvc.post("/usuarios", Map.of("email", email+"@gmail.com",
 				"senha",senha))
 		.andExpect(MockMvcResultMatchers.status().is4xxClientError());
 		
