@@ -24,23 +24,24 @@ public class UsuariosControllerTest {
 
 	@Autowired
 	private CustomMockMvc mvc;
-	private static Set<String> emailsUnicos = new HashSet<>();
+	private static Set<String> emailUnicos = new HashSet<>();
 	
-	@Property(tries = 10)
-	@Label("cria fluxo de cadastro de login")
-	void teste(@ForAll @AlphaChars @StringLength(min = 1,max = 20) String email,
-			@ForAll @AlphaChars @StringLength(min = 6,max = 20) String senha) throws Exception{
+	@Property(tries = 1)
+	@Label("fluxo de cadastro de um novo usuario")
+	void teste(@ForAll @AlphaChars @StringLength(min = 1, max = 20) String email,
+			@ForAll @AlphaChars @StringLength(min = 6, max = 20) String senha) throws Exception {
 		
-		Assumptions.assumeTrue(emailsUnicos.add(email));
+		Assumptions.assumeTrue(emailUnicos.add(email));
 		
-		mvc.post("/usuarios", Map.of("email", email+"@gmail.com",
+		mvc.post("/usuarios", Map.of("email",email+"@gmail",
 				"senha",senha))
 		.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 		
-		mvc.post("/usuarios", Map.of("email", email+"@gmail.com",
+		mvc.post("/usuarios", Map.of("email",email+"@gmail",
 				"senha",senha))
 		.andExpect(MockMvcResultMatchers.status().is4xxClientError());
 		
 	}
+	
 	
 }

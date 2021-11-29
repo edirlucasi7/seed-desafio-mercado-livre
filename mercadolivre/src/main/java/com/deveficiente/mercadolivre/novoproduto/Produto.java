@@ -45,6 +45,8 @@ public class Produto {
 	private @NotNull LocalDateTime instanteCriacao;
 	@OneToOne
 	private @NotNull Usuario usuarioLogado;
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private Set<ImagemProduto> imagens = new HashSet<>();
 	
 	@Deprecated
 	public Produto() { }
@@ -67,7 +69,8 @@ public class Produto {
 	public String toString() {
 		return "Produto [id=" + id + ", nome=" + nome + ", valor=" + valor + ", quantidade=" + quantidade
 				+ ", caracteristicas=" + caracteristicas + ", descricao=" + descricao + ", categoria=" + categoria
-				+ ", instanteCriacao=" + instanteCriacao + ", usuarioLogado=" + usuarioLogado + "]";
+				+ ", instanteCriacao=" + instanteCriacao + ", usuarioLogado=" + usuarioLogado + ", imagens=" + imagens
+				+ "]";
 	}
 
 	@Deprecated
@@ -98,6 +101,15 @@ public class Produto {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
+	}
+
+	public void associaImagens(Set<String> links) {
+		Set<ImagemProduto> imagens = links.stream().map(link -> new ImagemProduto(this,link)).collect(Collectors.toSet());
+		this.imagens .addAll(imagens);
+	}
+
+	public boolean pertenceAoUsuario(Usuario possivelDono) {
+		return this.usuarioLogado.equals(possivelDono);
 	}
 	
 }
