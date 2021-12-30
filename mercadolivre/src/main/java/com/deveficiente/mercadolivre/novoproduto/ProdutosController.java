@@ -28,7 +28,7 @@ public class ProdutosController {
 	@Autowired
 	private UsuarioRepository repository;
 	@Autowired
-	private Uploader uploadFake;
+	private Uploader uploader;
 	@Autowired
 	private ProibeCaracteristicaComNomeIgualValidator proibeCaracteristicaComNomeIgualValidator;
 	
@@ -41,7 +41,7 @@ public class ProdutosController {
 	@Transactional
 	public String cria(@RequestBody @Valid NovoProdutoRequest request) {
 		Usuario fakeUsuarioLogado = repository.findByEmail("icety@gmail");
-		
+		System.out.println(fakeUsuarioLogado);
 		Produto produto = request.toModel(manager,fakeUsuarioLogado);
 		manager.persist(produto);
 		
@@ -51,22 +51,17 @@ public class ProdutosController {
 	
 	@PostMapping("/produtos/{id}/imagens")
 	@Transactional
-	public String adicionaImagens(@Valid NovaImagensRequest request, @PathVariable("id") Long id) {
-		/*
-		 * 1) enviar imagens para o local onde elas vão ficar
-		 * 2) pegar os links de todas as imagens
-		 * 3) associar esses links com o produto em questão
-		 * 4) preciso carregar o produto
-		 * 5) depois que associar eu preciso atualizar a nova versão do produto 
-		 */
-		Usuario possivelDono = repository.findByEmail("icety@gmail");
-		Produto produto = manager.find(Produto.class, id);
+	public String adicionaImagens(@Valid NovasImagensRequest request, @PathVariable("id") Long id) {
 		
+		Produto produto = manager.find(Produto.class, id);
+		Usuario possivelDono = repository.findByEmail("icety@gmail");
+
 		if(!produto.pertenceAoUsuario(possivelDono)) {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 		}
-	
-		Set<String> links = uploadFake.envia(request.getImagens());
+		
+		Set<String> links = uploader.envia(request.getImagens());
+		System.out.println(links);
 		produto.associaImagens(links);
 		manager.merge(produto);
 		return produto.toString();

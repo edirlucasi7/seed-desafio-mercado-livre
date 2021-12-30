@@ -10,8 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Primary
-public class UploadFake implements Uploader{
+public class UploaderFake implements Uploader{
 
+	@Override
 	public Set<String> envia(List<MultipartFile> imagens) {
 		return imagens.stream()
 				.map(imagem -> "http://bucket.io/"

@@ -15,7 +15,7 @@ import com.deveficiente.mercadolivre.novoproduto.Produto;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
 
 @Entity
-public class NovaOpiniaoProduto {
+public class Opiniao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class NovaOpiniaoProduto {
 	@ManyToOne
 	private @NotNull Produto produto;
 
-	public NovaOpiniaoProduto(@Min(1) @Max(5) int nota, @NotBlank String titulo,
+	public Opiniao(@Min(1) @Max(5) int nota, @NotBlank String titulo,
 			@NotBlank @Size(max = 500) String descricao, @NotNull Usuario ususarioLogado, @NotNull Produto produto) {
 		this.nota = nota;
 		this.titulo = titulo;

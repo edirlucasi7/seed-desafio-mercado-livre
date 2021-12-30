@@ -1,4 +1,4 @@
-package com.deveficiente.mercadolivre.novaopiniaoproduto;
+package com.deveficiente.mercadolivre.novapergunta;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,27 +11,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deveficiente.mercadolivre.fechacompra.EmailSenderService;
 import com.deveficiente.mercadolivre.novoproduto.Produto;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
 import com.deveficiente.mercadolivre.novousuario.UsuarioRepository;
 
 @RestController
-public class OpiniaoProdutosController {
+public class NovaPerguntaController {
 	
 	@PersistenceContext
 	private EntityManager manager;
 	@Autowired
 	private UsuarioRepository repository;
+	@Autowired
+	private EmailSenderService emailSenderService;
 	
-	@PostMapping("/opinioes/{id}/produtos")
+	@PostMapping("/perguntas/{id}/produtos")
 	@Transactional
-	public String cria(@Valid @RequestBody NovaOpiniaoProdutoRequest request, @PathVariable("id") Long id) {
+	public String cria(@PathVariable("id") Long id, @RequestBody @Valid NovaPerguntaRequest request) {
 		Usuario fakeUsuarioLogado = repository.findByEmail("icety@gmail");
 		Produto produto = manager.find(Produto.class, id);
 		
-		Opiniao novaOpniao = request.toModel(produto,fakeUsuarioLogado);
-		manager.persist(novaOpniao);
-		return novaOpniao.toString();
+		Pergunta pergunta = request.toModel(produto, fakeUsuarioLogado);
+		manager.persist(pergunta);
+		
+//		String emailDonoProduto = produto.getDono().getEmail();
+//		emailSenderService.novaPergunta(emailDonoProduto, pergunta.getTitulo(), "NOVA PERGUNTA");
+		
+		return pergunta.toString();
 	}
 	
 }

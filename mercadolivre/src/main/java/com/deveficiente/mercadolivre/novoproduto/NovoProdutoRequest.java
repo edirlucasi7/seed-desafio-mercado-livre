@@ -50,7 +50,7 @@ public class NovoProdutoRequest {
 		
 		Produto produto = new Produto(nome,valor,quantidade,caracteristicas,descricao,categoria);
 	
-		produto.setUsuarioLogado(usuario);
+		produto.setDono(usuario);
 		
 		return produto; 			
 	}

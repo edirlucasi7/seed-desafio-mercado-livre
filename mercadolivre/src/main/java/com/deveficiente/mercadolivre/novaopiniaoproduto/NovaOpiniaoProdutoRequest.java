@@ -22,8 +22,8 @@ public class NovaOpiniaoProdutoRequest {
 		this.descricao = descricao;
 	}
 	
-	public NovaOpiniaoProduto toModel(Produto produto, Usuario fakeUsuarioLogado) {
-		return new NovaOpiniaoProduto(nota,titulo,descricao,fakeUsuarioLogado,produto);
+	public Opiniao toModel(Produto produto, Usuario fakeUsuarioLogado) {
+		return new Opiniao(nota,titulo,descricao,fakeUsuarioLogado,produto);
 	}
 	
 }

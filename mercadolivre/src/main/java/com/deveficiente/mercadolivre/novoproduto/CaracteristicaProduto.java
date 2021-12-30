@@ -59,4 +59,13 @@ public class CaracteristicaProduto {
 		return true;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+
 }
