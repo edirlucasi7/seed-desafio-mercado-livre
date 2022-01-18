@@ -29,15 +29,14 @@ public class DetalheProdutoResponse {
 		this.caracteristicas = produto.mapCaracteristicas(DetalheProdutoCaracteristica::new);
 		this.imagens = produto.mapImagens(imagem -> imagem.getLink());
 		this.perguntas = produto.mapPerguntas(pergunta -> pergunta.getTitulo());
-		this.opinioes = produto.mapOpinioes(opiniao -> {
+		
+		Opinioes opinioes = produto.getOpinioes();
+		
+		this.opinioes = opinioes.mapOpinioes(opiniao -> {
 			return Map.of("titutlo", opiniao.getTitulo(), "descricao", opiniao.getDescricao());
 		});
-		
-		Set<Integer> notas = produto.mapOpinioes(opiniao -> opiniao.getNota());
-		OptionalDouble possivelMedia = notas.stream().mapToInt(nota -> nota).average();
-		if(possivelMedia.isPresent()) {
-			this.mediaNotas = possivelMedia.getAsDouble();
-		}
+
+		this.mediaNotas = opinioes.media();
 	}
 	
 	public double getMediaNotas() {

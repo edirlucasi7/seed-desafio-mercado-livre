@@ -27,6 +27,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.util.Assert;
 
+import com.deveficiente.mercadolivre.detalheproduto.Opinioes;
 import com.deveficiente.mercadolivre.novacategoria.Categoria;
 import com.deveficiente.mercadolivre.novaopiniaoproduto.Opiniao;
 import com.deveficiente.mercadolivre.novapergunta.Pergunta;
@@ -180,8 +181,8 @@ public class Produto {
 		return this.perguntas.stream().map(funcaoMapeadora).collect(Collectors.toCollection(TreeSet::new));
 	}
 	
-	public <T> Set<T> mapOpinioes(Function<Opiniao, T> funcaoMapeadora) {
-		return this.opinioes.stream().map(funcaoMapeadora).collect(Collectors.toSet());
+	public Opinioes getOpinioes() {
+		return new Opinioes(this.opinioes);
 	}
 	
 }
