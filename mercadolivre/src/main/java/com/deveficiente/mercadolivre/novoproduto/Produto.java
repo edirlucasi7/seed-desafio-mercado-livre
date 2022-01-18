@@ -28,6 +28,7 @@ import javax.validation.constraints.Size;
 import org.springframework.util.Assert;
 
 import com.deveficiente.mercadolivre.novacategoria.Categoria;
+import com.deveficiente.mercadolivre.novaopiniaoproduto.Opiniao;
 import com.deveficiente.mercadolivre.novapergunta.Pergunta;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
 
@@ -54,6 +55,8 @@ public class Produto {
 	@OneToMany(mappedBy = "produto")
 	@OrderBy("titulo asc")
 	private SortedSet<Pergunta> perguntas = new TreeSet<>();
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private Set<Opiniao> opinioes = new HashSet<>();
 	
 	@Deprecated
 	public Produto() { }
@@ -87,7 +90,7 @@ public class Produto {
 				+ ", caracteristicas=" + caracteristicas + ", descricao=" + descricao + ", categoria=" + categoria
 				+ ", instanteCriacao=" + instanteCriacao + ", dono=" + dono + ", links=" + imagens + "]";
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -175,6 +178,10 @@ public class Produto {
 	
 	public <T extends Comparable<T>> SortedSet<T> mapPerguntas(Function<Pergunta, T> funcaoMapeadora) {
 		return this.perguntas.stream().map(funcaoMapeadora).collect(Collectors.toCollection(TreeSet::new));
+	}
+	
+	public <T> Set<T> mapOpinioes(Function<Opiniao, T> funcaoMapeadora) {
+		return this.opinioes.stream().map(funcaoMapeadora).collect(Collectors.toSet());
 	}
 	
 }
