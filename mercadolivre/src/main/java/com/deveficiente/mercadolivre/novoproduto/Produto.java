@@ -117,8 +117,6 @@ public class Produto {
 		return true;
 	}
 	
-	
-
 	public boolean pertenceAoUsuario(Usuario possivelDono) {
 		return this.dono.equals(possivelDono);
 	}
@@ -132,9 +130,10 @@ public class Produto {
 		return quantidade;
 	}
 
-	public void abateQuantidadeEstoque(@Positive @NotNull int quantidade) {
+	public boolean abateQuantidadeEstoque(@Positive @NotNull int quantidade) {
 		Assert.isTrue(quantidade > 0, "A quantidade não pode chegar aqui menor ou igual a zero!");
 		this.quantidade -= quantidade; 
+		return true;
 	}
 
 	public Usuario getDono() {

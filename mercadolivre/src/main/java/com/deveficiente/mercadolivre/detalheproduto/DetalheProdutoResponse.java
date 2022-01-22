@@ -2,10 +2,8 @@ package com.deveficiente.mercadolivre.detalheproduto;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.stream.IntStream;
 
 import com.deveficiente.mercadolivre.novoproduto.Produto;
 

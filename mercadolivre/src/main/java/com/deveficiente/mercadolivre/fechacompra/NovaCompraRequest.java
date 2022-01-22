@@ -1,7 +1,6 @@
 package com.deveficiente.mercadolivre.fechacompra;
 
 import javax.persistence.EntityManager;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -17,15 +16,14 @@ public class NovaCompraRequest {
 	private int quantidade;
 	@NotNull
 	private Long idProduto;
-	@NotBlank
-	private String formaPagamento;
+	@NotNull
+	private GatewayPagamento gateway;
 	
-	public NovaCompraRequest(@Positive @NotNull int quantidade, @NotNull Long idProduto,
-			@NotNull String formaPagamento) {
+	public NovaCompraRequest(@Positive @NotNull int quantidade, @NotNull Long idProduto, GatewayPagamento gateway) {
 		super();
 		this.quantidade = quantidade;
 		this.idProduto = idProduto;
-		this.formaPagamento = formaPagamento;
+		this.gateway = gateway;
 	}
 	
 	public Compra toModel(EntityManager manager, Usuario usuarioLogado) {
@@ -33,7 +31,7 @@ public class NovaCompraRequest {
 		Assert.notNull(produto, "O produto precisa existir aqui!");
 		produto.abateQuantidadeEstoque(quantidade);
 		
-		return new Compra(quantidade, produto, formaPagamento, usuarioLogado);
+		return new Compra(quantidade, produto, usuarioLogado, gateway);
 	}
 
 	public Object getIdProduto() {
@@ -43,5 +41,9 @@ public class NovaCompraRequest {
 	public int getQuantidade() {
 		return quantidade;
 	}
-	
+
+	public GatewayPagamento getGateway() {
+		return gateway;
+	}
+
 }

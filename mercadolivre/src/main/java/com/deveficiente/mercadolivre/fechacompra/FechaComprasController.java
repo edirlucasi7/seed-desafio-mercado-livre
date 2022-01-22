@@ -6,12 +6,15 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.deveficiente.mercadolivre.novoproduto.Produto;
 import com.deveficiente.mercadolivre.novousuario.Usuario;
 import com.deveficiente.mercadolivre.novousuario.UsuarioRepository;
 
@@ -23,11 +26,7 @@ public class FechaComprasController {
 	@Autowired
 	private UsuarioRepository repository;
 	@Autowired
-	private GatewayPagamento formaPagamento;
-	@Autowired
 	private VeirficaEstoqueDoProduto veirficaEstoqueDoProduto;
-	@Autowired
-	private EmailSenderService emailSenderService;
 	
 	@InitBinder
 	public void init(WebDataBinder binder) {
@@ -36,17 +35,27 @@ public class FechaComprasController {
 	
 	@PostMapping("/compras")
 	@Transactional
-	public String cria(@RequestBody @Valid NovaCompraRequest request) {
-		Usuario fakeUsuarioLogado = repository.findByEmail("icety@gmail");
+	public String cria(@RequestBody @Valid NovaCompraRequest request, UriComponentsBuilder uriComponentsBuilder) throws BindException {
+		Produto produtoASerComprado = manager.find(Produto.class, request.getIdProduto());
 		
-		Compra compra = request.toModel(manager, fakeUsuarioLogado);
-		manager.persist(compra);
+		int quantidade = request.getQuantidade();
+		boolean abateu = produtoASerComprado.abateQuantidadeEstoque(quantidade);
+		if(abateu) {
+			Usuario fakeUsuarioLogado = repository.findByEmail("icety@gmail");
+			
+			GatewayPagamento gateway = request.getGateway();
+			
+			Compra novaCompra = new Compra(quantidade, produtoASerComprado, fakeUsuarioLogado, gateway);
+			manager.persist(novaCompra);
+			
+			return novaCompra.urlRedirecionamento(uriComponentsBuilder);
+		}
 		
-		String emailDonoProduto = compra.getProduto().getDono().getEmail();
-		emailSenderService.fechaCompra(emailDonoProduto, "Um nova compra foi cadastrada", "teste");
+		BindException problemaComEstoque = new BindException(request, "novaCompraRequest");
+		problemaComEstoque.reject(null, "Não foi possível realizar a compra por conta do estoque insuficiente");
 		
-		String url = formaPagamento.getaway(compra.getId());
-		return "redirect:/"+url;
+		throw problemaComEstoque;
+	
 	}
 	
 }

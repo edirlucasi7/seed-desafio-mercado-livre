@@ -70,4 +70,8 @@ public class Usuario {
 		return email;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 }
